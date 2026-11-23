@@ -1,30 +1,33 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:material_ui/material_ui.dart';
 
 import 'package:cv_katembo_selemani_guy_leon/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('La page de connexion s\'affiche et bascule en inscription', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(const MyApp());
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('Bienvenue !'), findsOneWidget);
+    expect(find.text('Se connecter'), findsOneWidget);
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.tap(find.text('Pas encore de compte ? S\'inscrire'));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Créer un compte'), findsOneWidget);
+    expect(find.text('Créer mon compte'), findsOneWidget);
+  });
+
+  testWidgets('Les champs vides sont refusés avant tout appel à l\'API', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(const MyApp());
+
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Se connecter'));
+    await tester.pump();
+
+    expect(find.text('L\'email est obligatoire'), findsOneWidget);
+    expect(find.text('Le mot de passe est obligatoire'), findsOneWidget);
   });
 }
