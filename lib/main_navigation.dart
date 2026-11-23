@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'home_page.dart';
-import 'family_page.dart';
 import 'contact_page.dart';
+import 'family_page.dart';
+import 'home_page.dart';
+import 'theme/app_theme.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -20,25 +21,38 @@ class _MainNavigationState extends State<MainNavigation> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(index: currentIndex, children: pages),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        selectedItemColor: Colors.blue,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Mon CV'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.family_restroom),
-            label: 'Famille',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.contact_mail),
-            label: 'Contact',
-          ),
-        ],
+      bottomNavigationBar: DecoratedBox(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryDark.withValues(alpha: 0.08),
+              blurRadius: 20,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: NavigationBar(
+          selectedIndex: currentIndex,
+          onDestinationSelected: (index) =>
+              setState(() => currentIndex = index),
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.person_outline),
+              selectedIcon: Icon(Icons.person),
+              label: 'Mon CV',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.family_restroom_outlined),
+              selectedIcon: Icon(Icons.family_restroom),
+              label: 'Famille',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.contact_mail_outlined),
+              selectedIcon: Icon(Icons.contact_mail),
+              label: 'Contact',
+            ),
+          ],
+        ),
       ),
     );
   }
